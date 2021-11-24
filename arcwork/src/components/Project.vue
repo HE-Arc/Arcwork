@@ -9,6 +9,10 @@ export default {
         return {
             name : "projet"
         }
+    },
+
+    created: () => {
+        console.log("yolo")
     }
 
 }
