@@ -15,10 +15,10 @@ use App\Http\Controllers\API\UserController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-/*
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});*/
+});
 
 Route::apiResource('users', UserController::class);
 
