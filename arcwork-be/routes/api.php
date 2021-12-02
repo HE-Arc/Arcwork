@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\ProjectController;
+use App\Http\Controllers\API\TagController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('users', UserController::class);
+Route::apiResource('projects', ProjectController::class);
+Route::apiResource('tags', TagController::class);
 
-//Route::apiResource('projects', ProjectController::class);
