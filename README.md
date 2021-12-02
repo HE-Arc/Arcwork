@@ -14,7 +14,7 @@ git clone git@github.com:HE-Arc/Arcwork.git --recursive
 ```
 cp .env.example .env
 ```
-3. Modify these line
+3. Modify these lines
 ```
 COMPOSE_PROJECT_NAME=Arcwork
 PHP_VERSION=7.4
@@ -29,7 +29,16 @@ NGINX_HOST_HTTP_PORT=8000
 ```
 cp .env.example .env
 ```
-5. Install dependencie
+5. Modify these lines
+```
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=arcworkdb
+DB_USERNAME=homestead
+DB_PASSWORD=secret
+```
+6. Install dependencies
 > execute inarcwork-be/laradock/
 ```
 # Execute in laradock
