@@ -1,7 +1,11 @@
 async function getData(url) {
     let request = await fetch(url)
     let data = await request.json()
-    return data
+    if (request.ok) {
+        return data
+    } else {
+        throw (new Error());
+    }
 }
 
 
