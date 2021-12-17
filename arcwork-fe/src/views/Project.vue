@@ -1,24 +1,8 @@
 <template>
-    <div
-        v-on:click="extend"
-        id="test"
-        class="
-            max-w-sm
-            mx-auto
-            bg-white
-            rounded-xl
-            shadow-md
-            flex
-            items-center
-            space-x-4
-        "
-    >
-        <h1 id="title">{{ name }} {{ id }}</h1>
-
+    <div>
+        Project {{ name }}
         <p>{{ description }}</p>
         <Like v-on:click="liked" :n="like" />
-    </div>
-    <div id="body">
         <ul>
             <li v-for="hashtag in hashtags" :key="hashtag">
                 {{ hashtag }}
@@ -42,7 +26,6 @@ const testData = {
 };
 
 export default {
-    props: ["id"],
     data() {
         return {
             name: "projet",
@@ -70,16 +53,13 @@ export default {
                 this.hashtags.push(element);
             });
         },
-        extend() {
-            this.display = this.display == "none" ? "inline" : "none";
-        },
         async liked() {
             console.log("liked");
         },
     },
     async created() {
         try {
-            let data = await getData("/prjects/" + this.id);
+            let data = await getData("/projects/" + this.$route.params.id);
             this.loadData(data);
         } catch (error) {
             this.loadData(testData);
@@ -90,15 +70,4 @@ export default {
 
 
 <style >
-#test {
-    border: 1px solid #eee;
-}
-
-#title {
-    color: v-bind(color);
-}
-
-#body {
-    display: v-bind(display);
-}
 </style>

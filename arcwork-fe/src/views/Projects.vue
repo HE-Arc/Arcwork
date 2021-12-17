@@ -1,20 +1,20 @@
 <template>
     <div class="projects">
         <h1>all projects ! {{ name }}</h1>
-        <Project id="1" />
-        <Project id="2" />
-        <Project id="3" />
+        <ProjectMin id="1" />
+        <ProjectMin id="2" />
+        <ProjectMin id="3" />
     </div>
 </template>
 
 <script>
-import Project from "../components/Project";
+import ProjectMin from "../components/ProjectMin";
 import { getData } from "../tools/network";
 const testData = { name: "matthieu123" };
 export default {
     name: "Projects",
     components: {
-        Project,
+        ProjectMin,
     },
     data() {
         return {
