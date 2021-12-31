@@ -21,7 +21,7 @@ const testData = {
 export default {
     data() {
         return {
-            name: "projet",
+            name: "user",
             bio: "",
             creationDate: 0,
             like: 0,
