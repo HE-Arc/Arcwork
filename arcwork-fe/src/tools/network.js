@@ -8,9 +8,24 @@ async function getData(url) {
     }
 }
 
+async function sendData(url, data) {
+    console.log(data)
+    let request = await fetch(url, {
+        method: "post",
+        body: JSON.stringify(data)
+    })
+    let result = await request.json()
+    if (request.ok) {
+        return result
+    } else {
+        throw (new Error());
+    }
+}
+
+
 
 function test() {
     console.log("test")
 }
 
-export { getData, test }
+export { getData, sendData, test }
