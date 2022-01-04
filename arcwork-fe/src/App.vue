@@ -1,11 +1,11 @@
 <template>
     <div class="w-full">
         <div id="nav" class="bg-gray-700">
-            <div class="m-auto w-9/12">
-                <Logo class="p-4" />
-                <router-link class="text-underlined p-4" to="/about">About</router-link>
-                <router-link class="text-underlined p-4"  to="/projects">Projects</router-link>
-                <router-link class="text-underlined p-4"  to="/user/1">Users</router-link>
+            <div class="py-2 mx-auto w-9/12">
+                <Logo class="mx-4" />
+                <router-link class="text-xl text-underlined p-4" to="/about">About</router-link>
+                <router-link class="text-xl text-underlined p-4" to="/projects">Projects</router-link>
+                <router-link class="text-xl text-underlined p-4" to="/user/1">Users</router-link>
             </div>
         </div>
         <div id="content" class="w-8/12 m-auto">
