@@ -1,31 +1,19 @@
 <template>
-    <div
-        v-on:click="extend"
-        id="test"
-        class="
-            max-w-sm
-            mx-auto
-            bg-white
-            rounded-xl
-            shadow-md
-            flex
-            items-center
-            space-x-4
-        "
-    >
-        <h1 id="title">{{ name }} {{ id }}</h1>
-
-        <p>{{ description }}</p>
-        <Like v-on:click="liked" :n="like" />
-    </div>
-    <div id="body">
-        <ul>
-            <li v-for="hashtag in hashtags" :key="hashtag">
-                {{ hashtag }}
-            </li>
-        </ul>
-        <p>{{ text }}</p>
-        <button v-on:click="goToPage">details</button>
+    <div class="bg-white rounded-lg border-0">
+        <div v-on:click="extend" id="test" class="p-2">
+            <h1 class="text-3xl" id="title">{{ name }} {{ id }}</h1>
+            <p>{{ description }}</p>
+            <Like v-on:click="liked" :n="like" />
+        </div>
+        <div id="body">
+            <ul>
+                <li v-for="hashtag in hashtags" :key="hashtag">
+                    {{ hashtag }}
+                </li>
+            </ul>
+            <p>{{ text }}</p>
+            <button v-on:click="goToPage">details</button>
+        </div>
     </div>
 </template>
 
@@ -75,6 +63,7 @@ export default {
             this.display = this.display == "none" ? "inline" : "none";
         },
         async liked() {
+            this.like+=1;
             console.log("liked");
         },
         goToPage() {
@@ -100,9 +89,6 @@ export default {
 
 
 <style >
-#test {
-    border: 1px solid #eee;
-}
 
 #title {
     color: v-bind(color);
