@@ -6,6 +6,9 @@
                 <router-link class="text-xl text-underlined p-4" to="/about">About</router-link>
                 <router-link class="text-xl text-underlined p-4" to="/projects">Projects</router-link>
                 <router-link class="text-xl text-underlined p-4" to="/user/1">Users</router-link>
+                <router-link class="text-xl text-underlined p-4" to="/login">Login</router-link>
+                <router-link class="text-xl text-underlined p-4" to="/createProject">new project</router-link>
+                <router-link class="text-xl text-underlined p-4" to="/createUser">new user</router-link>
             </div>
         </div>
         <div id="content" class="w-8/12 m-auto">
