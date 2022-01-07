@@ -24,5 +24,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::apiResource('users', UserController::class);
 Route::apiResource('projects', ProjectController::class);
-Route::apiResource('tags', TagController::class);
-
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/likeUser', [UserController::class, 'like']);
+Route::post('/likeProject', [ProjectController::class, 'like']);

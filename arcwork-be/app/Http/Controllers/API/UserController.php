@@ -5,6 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
 
 class UserController extends Controller
 {
@@ -26,7 +29,32 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        User::create($request->all());
+
+        $validated = $request->validate([
+            'pseudo' => 'required|unique:users|max:20',
+            'password' => 'required',
+            'color' => 'required|max:7',
+            'bio' => 'required',
+            'profilePicPath' => 'required'
+        ]);
+
+        $statusMsg = "success";
+        $token = Str::random(20);
+
+        User::create([
+            "pseudo" => $validated['pseudo'],
+            "password" => Hash::make($validated['password']),
+            "color" => $validated['color'],
+            "like" => 0,
+            "bio" => $validated['bio'],
+            "profilePicPath" => $validated['profilePicPath'],
+            "identificationToken" => $token
+        ]);
+
+        return response()->json([
+            "status" => $statusMsg,
+            "identificationToken" => $token
+        ]);
     }
 
     /**
@@ -51,8 +79,6 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $user = User::findOrFail($id);
-        $user->update($request->all());
     }
 
     /**
@@ -62,7 +88,57 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
-        $user->delete();
+    }
+
+
+
+    public function like(Request $request)
+    {
+        $validated = $request->validate(['id' => 'required']);
+        $user = User::findOrFail($validated['id']);
+        $user['like'] = $user['like'] + 1;
+        $user->update();
+    }
+
+    public function login(Request $request)
+    {
+
+        $validated = $request->validate([
+            'pseudo' => 'required',
+            'password' => 'required'
+        ]);
+
+        $status = 'fail';
+        $token = '';
+        $id = UserController::UserId($validated['pseudo']);
+        if ($id != -1) {
+            $user = User::findOrFail($id);
+            if (Hash::check($validated["password"], $user["password"])) {
+                $status = 'success';
+                $token = $user['identificationToken'];
+            } else {
+                $status = "wrong password";
+            }
+        }
+
+
+        return response()->json([
+            "status" => $status,
+            'token' => $token,
+        ]);
+    }
+
+    /**
+     * /!\ temportaire à remplacer par mieu
+     */
+    static private function UserId($name)
+    {
+        $users = User::all();
+        foreach ($users as $user) {
+            if ($user["pseudo"] == $name) {
+                return $user['id'];
+            }
+        }
+        return -1;
     }
 }
