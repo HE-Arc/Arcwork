@@ -13,10 +13,10 @@
                 <label class="hidden" for="bio">bio:</label>
                 <textarea class="rounded-lg p-2 mx-auto block w-full h-24 text-center" name="bio" id="bio" placeholder="Describe yourself"/>
 
-                <label class="border-none mx-auto block font-bold" for="myfile">Select a profile picture :</label>
+                <label class="border-none mx-auto block font-bold" for="myfile">Select a picture for your project:</label>
                 <input class="border-none mx-auto block" type="file" id="myfile" name="myfile" />
 
-                <label class="border-none mx-auto block font-bold" for="favcolor">Select your favorite color:</label>
+                <label class="border-none mx-auto block font-bold" for="favcolor">Select a color for your project :</label>
                 <input class="border-none mx-auto block" type="color" id="favcolor" name="favcolor" value="#ff0000"/>
 
                 <label class="hidden" for="password">Password:</label>
