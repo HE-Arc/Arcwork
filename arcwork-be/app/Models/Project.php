@@ -11,8 +11,10 @@ class Project extends Model
 
     protected $fillable = [
         'name',
-        //'email',
         'description',
         'like',
+        'profilePicPath',
+        'color',
+        'like'
     ];
 }

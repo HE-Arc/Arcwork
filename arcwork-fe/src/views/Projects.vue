@@ -6,9 +6,9 @@
             <input class="cursor-pointer bg-green-400 rounded px-2 my-4 hover:bg-green-500" type="button" value="Rechercher" v-on:click="search"/>
         </div>
         <div class="flex flex-col space-y-7">
-            <ProjectMin id="1" />
-            <ProjectMin id="2" />
-            <ProjectMin id="3" />
+            <div v-for="id in projects" :key="id">
+                <ProjectMin :id="id"/>
+            </div>
         </div>
     </div>
 </template>
@@ -29,17 +29,19 @@ export default {
     },
     data() {
         return {
-            name: "yo",
+            projects: [],
         };
     },
     methods: {
         loadData(data) {
-            this.name = data["name"];
+            data.forEach((element) => {
+                this.projects.push(element.id);
+            });
         },
     },
     async created() {
         try {
-            let data = await getData("api");
+            let data = await getData("/projects");
             this.loadData(data);
         } catch (error) {
             this.loadData(testData);

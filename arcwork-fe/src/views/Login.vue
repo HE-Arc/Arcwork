@@ -24,6 +24,8 @@ import ErrorMsg from "../components/ErrorMsg";
 import NavBar from "../components/NavBar";
 import { isUserNameValid, isPasswordValid } from "../tools/parser";
 import { sendData } from "../tools/network";
+import { setCookie } from "../tools/cookie";
+import { goTo } from "../tools/nav";
 
 export default {
     name: "Login",
@@ -49,11 +51,15 @@ export default {
                 return 0;
             }
             try {
-                let result = sendData("/login", {
-                    username: name,
+                let result = await sendData("/login", {
+                    pseudo: name,
                     password: password,
                 });
                 console.log(result);
+                if (result.status == "success") {
+                    setCookie("token", result.token);
+                    goTo("/projects");
+                }
             } catch (error) {
                 console.log(error);
                 return 0;
