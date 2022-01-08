@@ -1,48 +1,36 @@
 <template>
     <div>
-        <h2>create a new user</h2>
-        <div id="errorMsg">
-            <error-msg :msg="error_msg"> </error-msg>
-        </div>
-        <div id="box">
-            <label for="username">Username:</label><br />
-            <input type="text" id="username" name="username" /><br />
+        <NavBar />
+        <div class="w-4/12 flex flex-col mx-auto px-14 py-10">
+            <div class="flex-auto text-4xl font-bold mx-auto block">Create a new user</div>
+            <div id="errorMsg">
+                <error-msg :msg="error_msg"> </error-msg>
+            </div>
+            <div id="box" class="flex flex-col gap-4 py-5">
+                <label class="hidden" for="username">Username:</label>
+                <input class="rounded-lg p-2 mx-auto block text-center" type="text" id="username" name="username" placeholder="UserName"/>
 
-            <label for="bio">bio:</label><br />
-            <textarea
-                rows="5"
-                cols="60"
-                name="bio"
-                id="bio"
-                placeholder="Enter text"
-            ></textarea
-            ><br />
+                <label class="hidden" for="bio">bio:</label>
+                <textarea class="rounded-lg p-2 mx-auto block w-full h-24 text-center" name="bio" id="bio" placeholder="Describe yourself"/>
 
-            <label for="myfile">Select a profile picture:</label><br />
-            <input type="file" id="myfile" name="myfile" /> <br />
+                <label class="border-none mx-auto block font-bold" for="myfile">Select a picture for your project:</label>
+                <input class="border-none mx-auto block" type="file" id="myfile" name="myfile" />
 
-            <label for="favcolor">Select your favorite color:</label><br />
-            <input
-                type="color"
-                id="favcolor"
-                name="favcolor"
-                value="#ff0000"
-            /><br />
+                <label class="border-none mx-auto block font-bold" for="favcolor">Select a color for your project :</label>
+                <input class="border-none mx-auto block" type="color" id="favcolor" name="favcolor" value="#ff0000"/>
 
-            <label for="password">Password:</label><br />
-            <input type="password" id="password" name="password" /><br />
-            <label for="confirmpassword">confirm Password:</label><br />
-            <input
-                type="password"
-                id="confirmpassword"
-                name="confirmpassword"
-            /><br />
-            <button v-on:click="send">send</button>
+                <label class="hidden" for="password">Password:</label>
+                <input class="rounded-lg p-2 mx-auto block w-full text-center" type="password" id="password" name="password" placeholder="Enter Password"/>
+                <label class="hidden" for="confirmpassword" >confirm Password:</label>
+                <input class="rounded-lg p-2 mx-auto block w-full text-center" type="password" id="confirmpassword" name="confirmpassword" placeholder="Confirm Password"/>
+                <button class="m-auto bg-mantis text-gray-200 p-2 rounded-lg block" v-on:click="send">Send</button>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+import NavBar from "../components/NavBar";
 import ErrorMsg from "../components/ErrorMsg";
 import { isUserNameValid, isPasswordValid, isBioValid } from "../tools/parser";
 import { sendData } from "../tools/network";
@@ -59,6 +47,7 @@ export default {
     },
     components: {
         ErrorMsg,
+        NavBar
     },
     methods: {
         async send() {
@@ -114,6 +103,7 @@ export default {
 
 
 <style >
+
 #errorMsg {
     display: v-bind(display);
 }
