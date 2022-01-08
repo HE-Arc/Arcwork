@@ -1,11 +1,12 @@
 <template>
     <div class="projects">
         <h1>all projects ! {{ name }}</h1>
-        <div class="flex flex-col space-y-7">
-            <ProjectMin id="1" />
-            <ProjectMin id="2" />
-            <ProjectMin id="3" />
-        </div>
+        <div class="flex flex-col space-y-7"></div>
+        <ul>
+            <li v-for="id in projects" :key="id">
+                <ProjectMin :id="id"> </ProjectMin> <br />
+            </li>
+        </ul>
     </div>
 </template>
 
@@ -21,17 +22,19 @@ export default {
     },
     data() {
         return {
-            name: "yo",
+            projects: [],
         };
     },
     methods: {
         loadData(data) {
-            this.name = data["name"];
+            data.forEach((element) => {
+                this.projects.push(element.id);
+            });
         },
     },
     async created() {
         try {
-            let data = await getData("api");
+            let data = await getData("/projects");
             this.loadData(data);
         } catch (error) {
             this.loadData(testData);

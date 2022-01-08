@@ -11,7 +11,6 @@
                     {{ hashtag }}
                 </li>
             </ul>
-            <p>{{ text }}</p>
             <button v-on:click="goToPage">details</button>
         </div>
     </div>
@@ -19,7 +18,8 @@
 
 <script>
 import Like from "../components/Like";
-import { getData } from "../tools/network";
+import { getData, sendData } from "../tools/network";
+import { goTo } from "../tools/nav";
 const testData = {
     name: "test p",
     description: "projet de dev web avec du vue !!",
@@ -39,7 +39,7 @@ export default {
             like: 0,
             color: "",
             profilePic: 0,
-            text: "",
+            texts: [],
             hashtags: [],
             display: "none",
         };
@@ -49,12 +49,14 @@ export default {
     },
     methods: {
         loadData(data) {
-            this.name = data.name;
-            this.description = data.description;
-            this.like = data.like;
-            this.color = data.color;
-            this.profilePic = data.profilePic;
-            this.text = data.text;
+            this.name = data.project.name;
+            this.description = data.project.description;
+            this.like = data.project.like;
+            this.color = data.project.color;
+            this.profilePic = data.project.profilePic;
+            data.texts.forEach((element) => {
+                this.hashtags.push(element);
+            });
             data.hashtags.forEach((element) => {
                 this.hashtags.push(element);
             });
@@ -63,17 +65,12 @@ export default {
             this.display = this.display == "none" ? "inline" : "none";
         },
         async liked() {
-            this.like+=1;
-            console.log("liked");
+            sendData("/likeProject", { id: this.id });
+            this.like = this.like + 1;
         },
+
         goToPage() {
-            location.href =
-                "http://" +
-                location.hostname +
-                ":" +
-                location.port +
-                "/#/project/" +
-                this.id;
+            goTo("/project/" + this.id);
         },
     },
     async created() {
@@ -89,7 +86,6 @@ export default {
 
 
 <style >
-
 #title {
     color: v-bind(color);
 }

@@ -46,6 +46,8 @@
 import ErrorMsg from "../components/ErrorMsg";
 import { isUserNameValid, isPasswordValid, isBioValid } from "../tools/parser";
 import { sendData } from "../tools/network";
+import { setCookie } from "../tools/cookie";
+import { goTo } from "../tools/nav";
 
 export default {
     name: "CreateUser",
@@ -60,6 +62,7 @@ export default {
     },
     methods: {
         async send() {
+            console.log("send");
             let name = document.getElementById("username").value;
             let password = document.getElementById("password").value;
             let confirmpassword =
@@ -78,13 +81,23 @@ export default {
                 isBioValid(bio)
             ) {
                 try {
-                    let result = sendData("/login", {
-                        username: name,
-                        password: password,
-                        color: color,
-                        bio: bio,
-                    });
-                    console.log(result);
+                    let result = await sendData(
+                        "/users",
+                        {
+                            pseudo: name,
+                            password: password,
+                            color: color,
+                            bio: bio,
+                            profilePicPath: "1",
+                        },
+                        ""
+                    );
+                    if (result.identificationToken == "") {
+                        throw new Error();
+                    }
+                    console.log(result.identificationToken);
+                    setCookie("token", result.identificationToken);
+                    goTo("/user/" + result.id);
                 } catch (error) {
                     console.log(error);
                     return 0;

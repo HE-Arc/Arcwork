@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;
+use App\Models\User;
 use App\Models\Tag;
 use App\Models\Text;
 use App\Models\ProjectHashTag;
@@ -36,8 +37,16 @@ class ProjectController extends Controller
             'description' => 'required',
             'color' => 'required|max:7',
             'profilePicPath' => 'required',
+            'token' => 'required'
         ]);
 
+
+        $exist = ProjectController::tokenExist($validated['token']);
+        if (!$exist) {
+            return response()->json([
+                "status" => 'fail wrong token',
+            ]);
+        }
         $projectId = Project::create([
             'name' => $validated['name'],
             'description' => $validated['description'],
@@ -176,6 +185,15 @@ class ProjectController extends Controller
         }
 
         return $texts;
+    }
+
+    static private function tokenExist($token)
+    {
+        $user = User::where('identificationToken', $token)->get();
+        if (isset($user[0]['pseudo'])) {
+            return true;
+        }
+        return false;
     }
 
 

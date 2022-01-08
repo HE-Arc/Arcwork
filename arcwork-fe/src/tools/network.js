@@ -11,11 +11,10 @@ async function getData(url) {
     }
 }
 
-async function sendData(url, data) {
-    console.log(data)
-    let request = await fetch(addr + url, {
+async function sendData(url, params = {}, body = "") {
+    let request = await fetch(addr + url + "?" + new URLSearchParams(params).toString(), {
         method: "post",
-        body: JSON.stringify(data)
+        body: JSON.stringify(body)
     })
     let result = await request.json()
     if (request.ok) {

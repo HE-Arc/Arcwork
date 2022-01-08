@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import { getData } from "../tools/network";
+import { getData, sendData } from "../tools/network";
 import Like from "../components/Like";
 
 const testData = {
@@ -34,7 +34,7 @@ export default {
     },
     methods: {
         loadData(data) {
-            this.name = data.name;
+            this.name = data.pseudo;
             this.bio = data.bio;
             this.like = data.like;
             this.color = data.color;
@@ -42,7 +42,8 @@ export default {
             this.creationDate = data.creationDate;
         },
         async liked() {
-            console.log("liked");
+            sendData("/likeUser", { id: this.$route.params.id });
+            this.like = this.like + 1;
         },
     },
     async created() {

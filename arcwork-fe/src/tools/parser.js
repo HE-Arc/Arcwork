@@ -13,7 +13,7 @@ function isElementValid(element) {
 }
 
 function isBioValid(bio) {
-    return RegExp("^[a-zA-Z0-9 ]{1,200}$").test(bio)
+    return RegExp("^[a-zA-Z0-9\\s]{1,200}$").test(bio)
 
 }
 export { isPasswordValid, isUserNameValid, isBioValid, isElementValid }
