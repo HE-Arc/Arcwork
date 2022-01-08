@@ -3,6 +3,9 @@ import Home from '../views/Home.vue'
 import Projects from '../views/Projects.vue'
 import Project from '../views/Project.vue'
 import User from '../views/User.vue'
+import CreateUser from '../views/CreateUser.vue'
+import CreateProject from '../views/CreateProject.vue'
+import Login from '../views/Login.vue'
 
 const routes = [{
         path: '/',
@@ -24,7 +27,22 @@ const routes = [{
         component: Projects
     },
     { path: '/project/:id', component: Project },
-    { path: '/user/:id', component: User }
+    { path: '/user/:id', component: User },
+    {
+        path: '/createProject',
+        name: 'CreateProject',
+        component: CreateProject
+    },
+    {
+        path: '/createUser',
+        name: 'CreateUser',
+        component: CreateUser
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login
+    },
 
 
 ]

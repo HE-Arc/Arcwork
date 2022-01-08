@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="cursor-pointer">
         <p>&#128150; {{ n }}</p>
     </div>
 </template>

@@ -1,37 +1,25 @@
 <template>
-    <div
-        v-on:click="extend"
-        id="test"
-        class="
-            max-w-sm
-            mx-auto
-            bg-white
-            rounded-xl
-            shadow-md
-            flex
-            items-center
-            space-x-4
-        "
-    >
-        <h1 id="title">{{ name }} {{ id }}</h1>
-
-        <p>{{ description }}</p>
-        <Like v-on:click="liked" :n="like" />
-    </div>
-    <div id="body">
-        <ul>
-            <li v-for="hashtag in hashtags" :key="hashtag">
-                {{ hashtag }}
-            </li>
-        </ul>
-        <p>{{ text }}</p>
-        <button v-on:click="goToPage">details</button>
+    <div class="bg-white rounded-lg border-0">
+        <div v-on:click="extend" id="test" class="p-2">
+            <h1 class="text-3xl" id="title">{{ name }} {{ id }}</h1>
+            <p>{{ description }}</p>
+            <Like v-on:click="liked" :n="like" />
+        </div>
+        <div id="body">
+            <ul>
+                <li v-for="hashtag in hashtags" :key="hashtag">
+                    {{ hashtag }}
+                </li>
+            </ul>
+            <button v-on:click="goToPage">details</button>
+        </div>
     </div>
 </template>
 
 <script>
 import Like from "../components/Like";
-import { getData } from "../tools/network";
+import { getData, sendData } from "../tools/network";
+import { goTo } from "../tools/nav";
 const testData = {
     name: "test p",
     description: "projet de dev web avec du vue !!",
@@ -51,7 +39,7 @@ export default {
             like: 0,
             color: "",
             profilePic: 0,
-            text: "",
+            texts: [],
             hashtags: [],
             display: "none",
         };
@@ -61,12 +49,14 @@ export default {
     },
     methods: {
         loadData(data) {
-            this.name = data.name;
-            this.description = data.description;
-            this.like = data.like;
-            this.color = data.color;
-            this.profilePic = data.profilePic;
-            this.text = data.text;
+            this.name = data.project.name;
+            this.description = data.project.description;
+            this.like = data.project.like;
+            this.color = data.project.color;
+            this.profilePic = data.project.profilePic;
+            data.texts.forEach((element) => {
+                this.hashtags.push(element);
+            });
             data.hashtags.forEach((element) => {
                 this.hashtags.push(element);
             });
@@ -75,16 +65,12 @@ export default {
             this.display = this.display == "none" ? "inline" : "none";
         },
         async liked() {
-            console.log("liked");
+            sendData("/likeProject", { id: this.id });
+            this.like = this.like + 1;
         },
+
         goToPage() {
-            location.href =
-                "http://" +
-                location.hostname +
-                ":" +
-                location.port +
-                "/#/project/" +
-                this.id;
+            goTo("/project/" + this.id);
         },
     },
     async created() {
@@ -100,10 +86,6 @@ export default {
 
 
 <style >
-#test {
-    border: 1px solid #eee;
-}
-
 #title {
     color: v-bind(color);
 }
