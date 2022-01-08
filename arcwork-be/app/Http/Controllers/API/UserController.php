@@ -41,7 +41,7 @@ class UserController extends Controller
         $statusMsg = "success";
         $token = Str::random(20);
 
-        User::create([
+        $user = User::create([
             "pseudo" => $validated['pseudo'],
             "password" => Hash::make($validated['password']),
             "color" => $validated['color'],
@@ -53,7 +53,8 @@ class UserController extends Controller
 
         return response()->json([
             "status" => $statusMsg,
-            "identificationToken" => $token
+            "identificationToken" => $token,
+            'id' => $user['id']
         ]);
     }
 

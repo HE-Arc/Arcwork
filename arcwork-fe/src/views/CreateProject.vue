@@ -40,6 +40,8 @@ import ListInput from "../components/ListInput";
 import ErrorMsg from "../components/ErrorMsg";
 import { isUserNameValid, isBioValid } from "../tools/parser";
 import { sendData } from "../tools/network";
+import { getCookie } from "../tools/cookie";
+import { goTo } from "../tools/nav";
 
 export default {
     name: "CreateProject",
@@ -48,6 +50,7 @@ export default {
             inputName1: "HASHTAG",
             inputName2: "TEXT",
             error_msg: "",
+            token: "",
         };
     },
     components: {
@@ -64,7 +67,6 @@ export default {
         },
 
         async send() {
-            console.log("HAHAHHAH");
             let hashtags = this.getElems(this.$refs.hashtags.$data);
             let texts = this.getElems(this.$refs.texts.$data);
             let name = document.getElementById("name").value;
@@ -73,14 +75,19 @@ export default {
             //let profilePic = document.getElementById("myfile").value;
             if (isUserNameValid(name) && isBioValid(description)) {
                 try {
-                    let result = sendData("/createProject", {
-                        name: name,
-                        color: color,
-                        description: description,
-                        texts: texts,
-                        hashtags: hashtags,
-                    });
+                    let result = await sendData(
+                        "/projects",
+                        {
+                            name: name,
+                            color: color,
+                            description: description,
+                            profilePicPath: "1",
+                            token: this.token,
+                        },
+                        { texts: texts, hashtags: hashtags }
+                    );
                     console.log(result);
+                    goTo("/project/" + result.id);
                 } catch (error) {
                     console.log(error);
                     return 0;
@@ -91,6 +98,13 @@ export default {
                 return 0;
             }
         },
+    },
+    created() {
+        this.token = getCookie("token");
+        console.log(this.token);
+        if (this.token == "") {
+            goTo("/projects");
+        }
     },
 };
 </script>
