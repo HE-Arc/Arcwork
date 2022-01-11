@@ -201,8 +201,10 @@ class ProjectController extends Controller
     {
         return True;
     }
+
     static private function validHashtag($text)
     {
         return True;
     }
+
 }

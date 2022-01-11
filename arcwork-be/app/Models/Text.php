@@ -11,4 +11,9 @@ class Text extends Model
     protected $fillable = [
         'text'
     ];
+
+    public function projects()
+    {
+        return $this->belongsToMany(Project::class);
+    }
 }
