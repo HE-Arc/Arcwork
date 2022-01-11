@@ -4,13 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Tag;
 use App\Models\Text;
-use App\Models\ProjectHashTag;
-use App\Models\ProjectText;
 
 class ProjectController extends Controller
 {
@@ -33,6 +30,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate input
         $validated = $request->validate([
             'name' => 'required|unique:projects|max:20',
             'description' => 'required',
@@ -41,13 +39,14 @@ class ProjectController extends Controller
             'token' => 'required'
         ]);
 
-
-        $exist = ProjectController::tokenExist($validated['token']);
-        if (!$exist) {
+        // Check if token is correct, stop if not
+        if (!ProjectController::tokenExist($validated['token'])) {
             return response()->json([
                 "status" => 'fail wrong token',
             ]);
         }
+
+        // Create the new project
         $projectId = Project::create([
             'name' => $validated['name'],
             'description' => $validated['description'],
@@ -56,23 +55,28 @@ class ProjectController extends Controller
             'profilePicPath' => $validated['profilePicPath']
         ])->id;
 
+        // Link the user with the new project
+        $user = User::where('identificationToken', $validated['token'])->get()->first();
+        $user->projects()->attach($projectId);
+
+        // Create texts and link them to the new project
         $data = json_decode($request->getContent());
         if (isset($data->{'texts'})) {
             foreach ($data->{'texts'} as $text) {
                 if (ProjectController::validText($text)) {
                     $text = Text::create(["text" => $text]);
                     $text->projects()->attach($projectId);
-
                 }
             }
         }
+
+        // Link the tags with the new project (create them if they don't already exist)
         if (isset($data->{'hashtags'})) {
-            foreach ($data->{'hashtags'} as $hashtag) {
-                if (ProjectController::validHashtag($hashtag)) {
-                    //$hashtag = DB::table('tags')->where('name', $hashtag)->get(); // other version, delete the DB header along with this line
-                    Tag::where('name', $hashtag)->get();
+            foreach ($data->{'hashtags'} as $hashtagName) {
+                if (ProjectController::validHashtag($hashtagName)) {
+                    $hashtag = Tag::where('name', $hashtagName)->get()->first();
                     if (empty($hashtag)) {
-                        $hashtag = Tag::create(["name" => $hashtag]);
+                        $hashtag = Tag::create(["name" => $hashtagName]);
                     }
                     $hashtag->projects()->attach($projectId);
                 }
@@ -98,6 +102,7 @@ class ProjectController extends Controller
             "project" => $project,
             "hashtags" => $project->hashtags()->get()->pluck('name'),
             "texts" => $project->texts()->get()->pluck('text'),
+            "users" => $project->users()->get()->pluck('pseudo'),
         ]);
     }
 
@@ -136,7 +141,6 @@ class ProjectController extends Controller
         $user = User::where('identificationToken', $token)->get();
         return isset($user[0]['pseudo']);
     }
-
 
     static private function validText($text)
     {

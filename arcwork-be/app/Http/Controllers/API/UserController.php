@@ -111,9 +111,9 @@ class UserController extends Controller
 
         $status = 'fail';
         $token = '';
-        $id = UserController::UserId($validated['pseudo']);
-        if ($id != -1) {
-            $user = User::findOrFail($id);
+
+        $user = User::where('pseudo', $validated['pseudo'])->get()->first();
+        if (!empty($user)) {
             if (Hash::check($validated["password"], $user["password"])) {
                 $status = 'success';
                 $token = $user['identificationToken'];
@@ -122,24 +122,9 @@ class UserController extends Controller
             }
         }
 
-
         return response()->json([
             "status" => $status,
             'token' => $token,
         ]);
-    }
-
-    /**
-     * /!\ temportaire à remplacer par mieu
-     */
-    static private function UserId($name)
-    {
-        $users = User::all();
-        foreach ($users as $user) {
-            if ($user["pseudo"] == $name) {
-                return $user['id'];
-            }
-        }
-        return -1;
     }
 }
