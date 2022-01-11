@@ -4,7 +4,6 @@ async function getData(url) {
     let request = await fetch(addr + url)
     let data = await request.json()
     if (request.ok) {
-        console.log(data)
         return data
     } else {
         throw (new Error());
