@@ -57,9 +57,6 @@ export default {
             data.forEach((element) => {
                 this.projects.push({ id: element.id, name: element.name });
             });
-        },
-        search(){
-            
         }
     },
     async created() {
