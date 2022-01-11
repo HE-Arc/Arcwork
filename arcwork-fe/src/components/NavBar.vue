@@ -11,8 +11,8 @@
                 <router-link class="hidden lg:inline-block text-lg text-dark-side-blue text-underlined py-4 px-2" to="/createProject">new project</router-link>
             </li>
             <li>
-                <router-link class="hidden lg:inline-block text-lg text-dark-side-blue text-underlined py-4 px-2" to="/login" v-show="getCookie('token') != ''">Login</router-link>
-                <router-link class="hidden lg:inline-block text-lg text-dark-side-blue text-underlined py-4 px-2" to="/createUser" v-show="getCookie('token') != ''">Sign-In</router-link>
+                <router-link class="hidden lg:inline-block text-lg text-dark-side-blue text-underlined py-4 px-2" to="/login" v-show="getCookie('token') == ''">Login</router-link>
+                <router-link class="hidden lg:inline-block text-lg text-dark-side-blue text-underlined py-4 px-2" to="/createUser" v-show="getCookie('token') == ''">Sign-In</router-link>
                 <Hamburger class="inline-block lg:hidden"/>
             </li>
 

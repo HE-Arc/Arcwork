@@ -1,17 +1,29 @@
 <template>
-    <div class="bg-white rounded-lg border-0">
-        <div v-on:click="extend" id="test" class="p-2">
+    <div class="">
+        <div id="test" class="rounded-lg bg-white p-2">
             <h1 class="text-3xl" id="title">{{ name }} {{ id }}</h1>
             <p>{{ description }}</p>
-            <Like v-on:click="liked" :n="like" />
+            <div class="flex justify-between">
+                <Like v-on:click="liked" :n="like" />
+                <button v-on:click="extend">
+                    <svg class="h-8 w-8 text-black transform transition duration-500 ease-in-out" :class="{'rotate-180': isDisplay }"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <line x1="12" y1="5" x2="12" y2="19" />
+                        <polyline points="19 12 12 19 5 12" />
+                    </svg>
+                    </button>
+                <button class="bg-green-400 rounded-lg p-2" v-on:click="goToPage">details</button>
+            </div>
         </div>
-        <div id="body">
-            <ul>
-                <li v-for="hashtag in hashtags" :key="hashtag">
+        <div id="body" class="w-11/12 mx-auto  rounded-b-lg bg-gray-200">
+            <ul class="flex flex-col gap-3 p-2">
+                <li class="break-all" v-for="text in texts" :key="text">
+                    {{ text }}
+                </li>
+            </ul>
+            <ul class="p-2">
+                <li class="bg-mantis rounded-lg px-2 py-1 inline" v-for="hashtag in hashtags" :key="hashtag">
                     {{ hashtag }}
                 </li>
             </ul>
-            <button v-on:click="goToPage">details</button>
         </div>
     </div>
 </template>
@@ -42,6 +54,7 @@ export default {
             texts: [],
             hashtags: [],
             display: "none",
+            isDisplay: false,
         };
     },
     components: {
@@ -55,14 +68,15 @@ export default {
             this.color = data.project.color;
             this.profilePic = data.project.profilePic;
             data.texts.forEach((element) => {
-                this.hashtags.push(element);
+                this.texts.push(element);
             });
             data.hashtags.forEach((element) => {
                 this.hashtags.push(element);
             });
         },
         extend() {
-            this.display = this.display == "none" ? "inline" : "none";
+            this.display = this.display == "none" ? "block" : "none";
+            this.isDisplay = !this.isDisplay;
         },
         async liked() {
             sendData("/likeProject", { id: this.id });

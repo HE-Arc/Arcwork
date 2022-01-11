@@ -3,9 +3,7 @@
         <NavBar />
         <div class="md:w-6/12 lg:4/12 flex flex-col mx-auto md:px-14 px-2 py-10">
             <div class="flex-auto text-4xl font-bold mx-auto block">Create a new user</div>
-            <div id="errorMsg">
-                <error-msg :msg="error_msg"> </error-msg>
-            </div>
+            <error-msg v-if="error_msg" :msg="error_msg"> </error-msg>
             <div id="box" class="flex flex-col gap-4 py-5">
                 <label class="hidden" for="username">Username:</label>
                 <input class="rounded-lg p-2 mx-auto block text-center" type="text" id="username" name="username" placeholder="UserName"/>
@@ -41,7 +39,6 @@ export default {
     name: "CreateUser",
     data() {
         return {
-            display: "none",
             error_msg: "",
         };
     },
@@ -60,7 +57,6 @@ export default {
             let bio = document.getElementById("bio").value;
             //let profilePic = document.getElementById("myfile").value;
             if (password != confirmpassword) {
-                this.display = "inline";
                 this.error_msg = "password or username error";
                 return 0;
             }
@@ -92,7 +88,6 @@ export default {
                     return 0;
                 }
             } else {
-                this.display = "inline";
                 this.error_msg = "password or username error";
                 return 0;
             }
@@ -103,8 +98,4 @@ export default {
 
 
 <style >
-
-#errorMsg {
-    display: v-bind(display);
-}
 </style>

@@ -9,8 +9,7 @@
                 </div>
                 <div class="">
                     <div class="h-32 w-32">
-                        <!--<div class="h-32 w-32 z-50 rounded-full flex items-center justify-center ring-8 ring-  absolute"></div>-->
-                        <img class="h-28 w-28 m-2 z-40 object-scale-down absolute" src="../assets/ArcworkLogo.png">
+                        <img class="h-28 w-28 m-2 object-scale-down" src="../assets/projectDemo.png">
                     </div>
                 </div>
                 <div class="p-10">

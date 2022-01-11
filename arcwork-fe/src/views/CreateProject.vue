@@ -1,24 +1,24 @@
 <template>
     <div>
         <NavBar />
-        <div class="md:w-6/12 lg:4/12 flex flex-col mx-auto md:px-14 px-2 py-10">
+        <div class="md:w-6/12 flex flex-col mx-auto md:px-14 px-2 py-10">
             <div class="flex-auto text-4xl font-bold mx-auto block">Create a new project</div>
-            <div id="errorMsg">
-                <error-msg :msg="error_msg"> </error-msg>
-            </div>
+            <error-msg v-if="error_msg" :msg="error_msg"> </error-msg>
             <div id="box" class="flex flex-col gap-4 py-5">
                 <label class="hidden" for="name">name:</label>
                 <input class="rounded-lg p-2 mx-auto block w-full text-center" type="text" id="name" name="name" placeholder="Project name"/>
 
                 <label class="hidden" for="description">description:</label>
                 <textarea class="rounded-lg p-2 mx-auto block w-full h-24 text-center" rows="5" cols="60" name="description" id="description" placeholder="Enter text"></textarea>
-                <label for="myfile">Select a profile picture:</label>
-                <input class="rounded-lg p-2 mx-auto block w-full text-center" type="file" id="myfile" name="myfile"/>
+                <label class="border-none mx-auto block font-bold" for="myfile">Select a profile picture:</label>
+                <input class="rounded-lg p-2 mx-auto block text-center" type="file" id="myfile" name="myfile"/>
 
                 <label class="border-none mx-auto block font-bold" for="favcolor">Select your favorite color:</label>
                 <input class="border-none mx-auto block" type="color" id="favcolor" name="favcolor" value="#ff0000"/>
-                <list-input :name="inputName1" ref="hashtas"></list-input>
-                <list-input :name="inputName2" ref="texts"></list-input>
+                <div class="flex flex-wrap lg:justify-between justify-center">
+                    <list-input :name="inputName1" ref="hashtags"></list-input>
+                    <list-input :name="inputName2" ref="texts"></list-input>
+                </div>
                 <button class="m-auto bg-mantis text-gray-200 p-2 rounded-lg block" v-on:click="send">Send</button>
             </div>
         </div>
@@ -85,7 +85,6 @@ export default {
                     return 0;
                 }
             } else {
-                this.display = "inline";
                 this.error_msg = "description or name error";
                 return 0;
             }
@@ -103,7 +102,4 @@ export default {
 
 
 <style >
-#errorMsg {
-    display: v-bind(display);
-}
 </style>

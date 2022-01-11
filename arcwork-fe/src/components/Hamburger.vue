@@ -14,14 +14,21 @@
                 <li class="block px-4"><router-link class="block text-dark-side-blue p-4 text-xl" to="/projects">Projects</router-link></li>
                 <li class="block px-4"><router-link class="block text-dark-side-blue p-4 text-xl" to="/user/1">Users</router-link></li>
                 <li class="block px-4"><router-link class="block text-dark-side-blue p-4 text-xl" to="/createProject">new project</router-link></li>
-                <li class="block px-4"><router-link class="block text-dark-side-blue p-4 text-xl" to="/login">Login</router-link></li>
-                <li class="block px-4"><router-link class="block text-dark-side-blue p-4 text-xl" to="/createUser">Sign-In</router-link></li>
+                <li class="block px-4" v-show="getCookie('token') == ''"><router-link class="block text-dark-side-blue p-4 text-xl" to="/login">Login</router-link></li>
+                <li class="block px-4" v-show="getCookie('token') == ''"><router-link class="block text-dark-side-blue p-4 text-xl" to="/createUser" >Sign-In</router-link></li>
             </ul>
         </div>
     </div>
 </template>
 <script>
+import {getCookie} from "../tools/cookie";
+
 export default {
+    methods: {
+        getCookie(data) {
+            return getCookie(data);
+        },
+    },
     data() {
         return {
             isopen : false,

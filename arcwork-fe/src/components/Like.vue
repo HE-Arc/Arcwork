@@ -1,7 +1,5 @@
 <template>
-    <div class="cursor-pointer">
-        <p>&#128150; {{ n }}</p>
-    </div>
+    <div class="cursor-pointer inline p-2">&#128150; {{ n }}</div>
 </template>
 
 <script>
