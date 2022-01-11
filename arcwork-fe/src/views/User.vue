@@ -18,10 +18,9 @@
                     <Like v-on:click="liked" :n="like" />
                     <p>{{ creationDate }}</p>
                 </div>
-            </div >
+            </div>
             <div class="flex flex-col w-3/4 m-auto space-y-7">
                 <ProjectMin id="1"/>
-                
             </div>
         </div>
     </div>
@@ -67,7 +66,7 @@ export default {
             this.creationDate = data.creationDate;
         },
         async liked() {
-            sendData("/likeUser", { id: this.$route.params.id });
+            sendData("/likeUser/" + this.$route.params.id, {});
             this.like = this.like + 1;
         },
     },

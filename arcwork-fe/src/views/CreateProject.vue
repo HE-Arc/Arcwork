@@ -4,9 +4,16 @@
         <div class="md:w-6/12 flex flex-col mx-auto md:px-14 px-2 py-10">
             <div class="flex-auto text-4xl font-bold mx-auto block">Create a new project</div>
             <error-msg v-if="error_msg" :msg="error_msg"> </error-msg>
+
             <div id="box" class="flex flex-col gap-4 py-5">
                 <label class="hidden" for="name">name:</label>
-                <input class="rounded-lg p-2 mx-auto block w-full text-center" type="text" id="name" name="name" placeholder="Project name"/>
+                <input
+                    class="rounded-lg p-2 mx-auto block w-full text-center"
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Project name"
+                />
 
                 <label class="hidden" for="description">description:</label>
                 <textarea class="rounded-lg p-2 mx-auto block w-full h-24 text-center" rows="5" cols="60" name="description" id="description" placeholder="Enter text"></textarea>
@@ -20,6 +27,7 @@
                     <list-input :name="inputName2" ref="texts"></list-input>
                 </div>
                 <button class="m-auto bg-mantis text-gray-200 p-2 rounded-lg block" v-on:click="send">Send</button>
+
             </div>
         </div>
     </div>

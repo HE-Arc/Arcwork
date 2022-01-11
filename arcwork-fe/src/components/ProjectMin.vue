@@ -79,7 +79,8 @@ export default {
             this.isDisplay = !this.isDisplay;
         },
         async liked() {
-            sendData("/likeProject", { id: this.id });
+            sendData("/likeProject/" + this.id);
+
             this.like = this.like + 1;
         },
 
