@@ -40,6 +40,12 @@ DB_PASSWORD=secret
 ```
 6. Install dependencies
 > execute inarcwork-be/laradock/
+
+start docker
+```
+# Execute in laradock
+docker-compose up nginx mysql phpmyadmin redis workspace
+```
 ```
 # Execute in laradock
 docker-compose exec workspace bash
