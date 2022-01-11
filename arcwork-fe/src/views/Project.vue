@@ -61,7 +61,7 @@ export default {
             });
         },
         async liked() {
-            sendData("/likeProject", { id: this.$route.params.id });
+            sendData("/likeProject/" + this.$route.params.id, {});
             this.like = this.like + 1;
         },
     },

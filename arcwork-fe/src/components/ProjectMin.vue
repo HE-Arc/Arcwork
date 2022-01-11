@@ -65,7 +65,8 @@ export default {
             this.display = this.display == "none" ? "inline" : "none";
         },
         async liked() {
-            sendData("/likeProject", { id: this.id });
+            sendData("/likeProject/" + this.id);
+
             this.like = this.like + 1;
         },
 
