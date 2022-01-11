@@ -9,6 +9,7 @@ module.exports = {
         'lavender-web' : '#DADFF7',
         'dark-side-blue': '#A0C1D1' ,
         'lavender-gray' : '#B5B2C2',
+        'black-coral' : '#4A586D'
       },
     },
   },
