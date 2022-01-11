@@ -132,12 +132,16 @@ class ProjectController extends Controller
     }
 
 
-    public function like(Request $request)
+    public static function like($id)
     {
-        $validated = $request->validate(['id' => 'required']);
-        $user = Project::findOrFail($validated['id']);
-        $user['like'] = $user['like'] + 1;
-        $user->update();
+        $msg = "fail";
+        if (is_int((int)$id)) {
+            $project = Project::findOrFail($id);
+            $project['like'] = $project['like'] + 1;
+            $project->update();
+            $msg = "success";
+        }
+        return response()->json(["status" => $msg]);
     }
 
     /**

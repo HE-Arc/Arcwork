@@ -4,7 +4,9 @@
         <div class="mx-auto w-8/12">
             <div class="flex justify-between px-14 py-10">
                 <div class="">
-                    <div class="text-4xl font-bold py-4 pr-2 inline-block">{{ name }}</div>
+                    <div class="text-4xl font-bold py-4 pr-2 inline-block">
+                        {{ name }}
+                    </div>
                     <div class="text-xl inline">#{{ $route.params.id }}</div>
                     <div class="">
                         {{ bio }}
@@ -13,24 +15,34 @@
                 <div class="">
                     <div class="h-32 w-32">
                         <!--<div class="h-32 w-32 z-50 rounded-full flex items-center justify-center ring-8 ring-  absolute"></div>-->
-                        <img class="h-28 w-28 m-2 z-40 object-scale-down absolute" src="../assets/ArcworkLogo.png">
+                        <img
+                            class="
+                                h-28
+                                w-28
+                                m-2
+                                z-40
+                                object-scale-down
+                                absolute
+                            "
+                            src="../assets/ArcworkLogo.png"
+                        />
                     </div>
                 </div>
                 <div class="p-10">
                     <Like v-on:click="liked" :n="like" />
                     <p>{{ creationDate }}</p>
                 </div>
-            </div >
+            </div>
             <div class="flex flex-col w-3/4 m-auto space-y-7">
-                <ProjectMin id="1"/>
-                <ProjectMin id="2"/>
-                <ProjectMin id="3"/>
-                <ProjectMin id="3"/>
-                <ProjectMin id="3"/>
-                <ProjectMin id="3"/>
-                <ProjectMin id="3"/>
-                <ProjectMin id="3"/>
-                <ProjectMin id="3"/>
+                <ProjectMin id="1" />
+                <ProjectMin id="2" />
+                <ProjectMin id="3" />
+                <ProjectMin id="3" />
+                <ProjectMin id="3" />
+                <ProjectMin id="3" />
+                <ProjectMin id="3" />
+                <ProjectMin id="3" />
+                <ProjectMin id="3" />
             </div>
         </div>
     </div>
@@ -76,7 +88,7 @@ export default {
             this.creationDate = data.creationDate;
         },
         async liked() {
-            sendData("/likeUser", { id: this.$route.params.id });
+            sendData("/likeUser/" + this.$route.params.id, {});
             this.like = this.like + 1;
         },
     },
