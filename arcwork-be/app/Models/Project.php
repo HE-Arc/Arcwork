@@ -17,4 +17,19 @@ class Project extends Model
         'color',
         'like'
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function texts()
+    {
+        return $this->belongsToMany(Text::class);
+    }
+
+    public function hashtags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

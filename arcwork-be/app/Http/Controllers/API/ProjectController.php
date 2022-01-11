@@ -8,8 +8,6 @@ use App\Models\Project;
 use App\Models\User;
 use App\Models\Tag;
 use App\Models\Text;
-use App\Models\ProjectHashTag;
-use App\Models\ProjectText;
 
 class ProjectController extends Controller
 {
@@ -32,6 +30,7 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
+        // Validate input
         $validated = $request->validate([
             'name' => 'required|unique:projects|max:20',
             'description' => 'required',
@@ -40,13 +39,14 @@ class ProjectController extends Controller
             'token' => 'required'
         ]);
 
-
-        $exist = ProjectController::tokenExist($validated['token']);
-        if (!$exist) {
+        // Check if token is correct, stop if not
+        if (!ProjectController::tokenExist($validated['token'])) {
             return response()->json([
                 "status" => 'fail wrong token',
             ]);
         }
+
+        // Create the new project
         $projectId = Project::create([
             'name' => $validated['name'],
             'description' => $validated['description'],
@@ -55,47 +55,33 @@ class ProjectController extends Controller
             'profilePicPath' => $validated['profilePicPath']
         ])->id;
 
-        $dd = [];
+        // Link the user with the new project
+        $user = User::where('identificationToken', $validated['token'])->get()->first();
+        $user->projects()->attach($projectId);
+
+        // Create texts and link them to the new project
         $data = json_decode($request->getContent());
         if (isset($data->{'texts'})) {
             foreach ($data->{'texts'} as $text) {
                 if (ProjectController::validText($text)) {
-                    $textId = Text::create(["text" => $text])->id;
-                    ProjectText::create([
-                        "projectId" => $projectId,
-                        "textId" => $textId
-                    ]);
+                    $text = Text::create(["text" => $text]);
+                    $text->projects()->attach($projectId);
                 }
             }
         }
+
+        // Link the tags with the new project (create them if they don't already exist)
         if (isset($data->{'hashtags'})) {
-            foreach ($data->{'hashtags'} as $hashtag) {
-                if (ProjectController::validHashtag($hashtag)) {
-                    try {
-                        $hashtagId = Tag::create(["name" => $hashtag])->id;
-                        ProjectHashTag::create([
-                            "projectId" => $projectId,
-                            "hashtagId" => $hashtagId
-                        ]);
-                    } catch (\Throwable $th) {
-                        /**
-                         * il faudrait verifier que l'erreur soit bien
-                         * que le hashtag existe deja sinon nimporte qui pourrait
-                         * link de mauvais hashtag
-                         */
-                        $hashtagId = ProjectController::getHashtagId($hashtag);
-                        if ($hashtagId != -1) {
-                            ProjectHashTag::create([
-                                "projectId" => $projectId,
-                                "hashtagId" => $hashtagId
-                            ]);
-                        }
+            foreach ($data->{'hashtags'} as $hashtagName) {
+                if (ProjectController::validHashtag($hashtagName)) {
+                    $hashtag = Tag::where('name', $hashtagName)->get()->first();
+                    if (empty($hashtag)) {
+                        $hashtag = Tag::create(["name" => $hashtagName]);
                     }
+                    $hashtag->projects()->attach($projectId);
                 }
             }
         }
-
-
 
         return response()->json([
             "status" => 'success',
@@ -114,9 +100,9 @@ class ProjectController extends Controller
         $project = Project::findOrFail($id);
         return response()->json([
             "project" => $project,
-            "hashtags" => ProjectController::getProjectHashtag($id),
-            "texts" => ProjectController::getProjectText($id)
-
+            "hashtags" => $project->hashtags()->get()->pluck('name'),
+            "texts" => $project->texts()->get()->pluck('text'),
+            "users" => $project->users()->get()->pluck('pseudo'),
         ]);
     }
 
@@ -154,59 +140,20 @@ class ProjectController extends Controller
     {
     }
 
-    //mauvais, à remplacer par un truc plus laravel
-    static private function getHashtagId($hashtag)
-    {
-        $hashtags = Tag::all();
-        foreach ($hashtags as $tag) {
-            if ($tag["name"] == $hashtag) {
-                return $tag['id'];
-            }
-        }
-        return -1;
-    }
-
-    static private function getProjectHashtag($projectId)
-    {
-        //j'arrive pas à utiliser where !!
-        $hashtags = [];
-        foreach (ProjectHashTag::all() as $l) {
-            if ($l['projectId'] == $projectId) {
-                array_push($hashtags, Tag::findOrFail($l['hashtagId'])['name']);
-            }
-        }
-
-        return $hashtags;
-    }
-
-    static private function getProjectText($projectId)
-    {
-        $texts = [];
-        foreach (ProjectText::all() as $l) {
-            if ($l['projectId'] == $projectId) {
-                array_push($texts, Text::findOrFail($l['textId'])['text']);
-            }
-        }
-
-        return $texts;
-    }
-
     static private function tokenExist($token)
     {
         $user = User::where('identificationToken', $token)->get();
-        if (isset($user[0]['pseudo'])) {
-            return true;
-        }
-        return false;
+        return isset($user[0]['pseudo']);
     }
-
 
     static private function validText($text)
     {
         return True;
     }
+
     static private function validHashtag($text)
     {
         return True;
     }
+
 }

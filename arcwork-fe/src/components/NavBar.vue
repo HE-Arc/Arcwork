@@ -1,33 +1,46 @@
 <template>
     <div id="nav" class="bg-charcoal">
-        <ul class="flex justify-between items-center mx-auto w-8/12">
+        <ul class="flex justify-between items-center mx-auto md:w-8/12">
             <li class="">
                 <Logo class="mx-4" />
             </li>
             <li>
-                <router-link class="text-lg text-dark-side-blue text-underlined py-4 px-2" to="/about">About</router-link>
-                <router-link class="text-lg text-dark-side-blue text-underlined py-4 px-2" to="/projects">Projects</router-link>
-                <router-link class="text-lg text-dark-side-blue text-underlined py-4 px-2" to="/user/1">Users</router-link>
-                <router-link class="text-lg text-dark-side-blue text-underlined py-4 px-2" to="/createProject">new project</router-link>
+                <router-link class="hidden lg:inline-block text-lg text-dark-side-blue text-underlined py-4 px-2" to="/about">About</router-link>
+                <router-link class="hidden lg:inline-block text-lg text-dark-side-blue text-underlined py-4 px-2" to="/projects">Projects</router-link>
+                <router-link class="hidden lg:inline-block text-lg text-dark-side-blue text-underlined py-4 px-2" to="/user/1">Users</router-link>
+                <router-link class="hidden lg:inline-block text-lg text-dark-side-blue text-underlined py-4 px-2" to="/createProject">new project</router-link>
             </li>
             <li>
-                <router-link class="text-lg text-dark-side-blue text-underlined py-4 px-2" to="/login">Login</router-link>
-                <router-link class="text-lg text-dark-side-blue text-underlined py-4 px-2" to="/createUser">Sign-In</router-link>
+                <router-link class="hidden lg:inline-block text-lg text-dark-side-blue text-underlined py-4 px-2" to="/login" v-show="getCookie('token') == ''">Login</router-link>
+                <router-link class="hidden lg:inline-block text-lg text-dark-side-blue text-underlined py-4 px-2" to="/createUser" v-show="getCookie('token') == ''">Sign-In</router-link>
+                <Hamburger class="inline-block lg:hidden"/>
             </li>
+
         </ul>
     </div>
 </template>
 
 <script>
 import Logo from "../components/Logo";
+import Hamburger from "../components/Hamburger";
+import { getCookie } from '../tools/cookie';
 
 export default {
     components: {
         Logo,
+        Hamburger
+    },
+    methods: {
+        getCookie(data) {
+            return getCookie(data);
+        },
     },
 };
 </script>
 <style>
+/*
+* Text souligné
+*/
 
 .text-underlined{
   position: relative;

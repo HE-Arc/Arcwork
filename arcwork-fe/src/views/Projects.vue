@@ -1,26 +1,10 @@
 <template>
     <NavBar />
-    <div class="w-1/2 mx-auto">
-        <div class="flex flex-row space-x-7">
-            <Search
-                class="flex-1"
-                placeholder="Recherche"
-                label="Recherche"
-                ref="searchBar"
-            />
-            <input
-                class="
-                    cursor-pointer
-                    bg-green-400
-                    rounded
-                    px-2
-                    my-4
-                    hover:bg-green-500
-                "
-                type="button"
-                value="Rechercher"
-                v-on:click="search"
-            />
+    <div class="lg:w-1/2 mx-auto p-2">
+        <div class="flex flex-row">
+            <Search class="flex-1" placeholder="Recherche" label="Recherche"/>
+            <input class="cursor-pointer bg-green-400 rounded px-2 my-4 hover:bg-green-500" type="button" value="Rechercher" v-on:click="search"/>
+
         </div>
         <div class="flex flex-col space-y-7">
             <div v-for="elem in projects" :key="elem">
@@ -74,6 +58,9 @@ export default {
                 this.projects.push({ id: element.id, name: element.name });
             });
         },
+        search(){
+            
+        }
     },
     async created() {
         try {
