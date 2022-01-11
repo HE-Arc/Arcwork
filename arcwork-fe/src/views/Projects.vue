@@ -1,7 +1,7 @@
 <template>
     <NavBar />
-    <div class="w-1/2 mx-auto">
-        <div class="flex flex-row space-x-7">
+    <div class="lg:w-1/2 mx-auto p-2">
+        <div class="flex flex-row">
             <Search class="flex-1" placeholder="Recherche" label="Recherche"/>
             <input class="cursor-pointer bg-green-400 rounded px-2 my-4 hover:bg-green-500" type="button" value="Rechercher" v-on:click="search"/>
         </div>
@@ -38,6 +38,9 @@ export default {
                 this.projects.push(element.id);
             });
         },
+        search(){
+            
+        }
     },
     async created() {
         try {

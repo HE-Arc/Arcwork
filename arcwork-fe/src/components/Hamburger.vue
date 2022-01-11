@@ -8,13 +8,14 @@
                 <span aria-hidden="true" class="block absolute h-1 w-7 bg-gray-200 transform transition duration-500 ease-in-out" :class="{'-rotate-45': isopen, 'translate-y-2': !isopen}"></span>
             </div>
         </button>
-        <div class="block absolute bg-black-coral w-1/2 right-0 rounded-bl-3xl transform transition duration-500 ease-in-out" :class="{'translate-x-full': !isopen }">
+        <div class="block absolute bg-black-coral w-1/2 right-0 rounded-bl-3xl transform transition duration-500 ease-in-out" :class="{'translate-x-full': !isopen }" v-show="isopen">
             <ul class="list-none p-0 m-0">
-                <li class="block px-4"><a class="block transition duration-300 ease-in p-4 text-xl" href="">Top</a></li>
-                <li class="block px-4"><a class="block transition duration-300 ease-in p-4 text-xl" href="">About</a></li>
-                <li class="block px-4"><a class="block transition duration-300 ease-in p-4 text-xl" href="">Blog</a></li>
-                <li class="block px-4"><a class="block transition duration-300 ease-in p-4 text-xl" href="">Work</a></li>
-                <li class="block px-4"><a class="block transition duration-300 ease-in p-4 text-xl" href="">Link</a></li>
+                <li class="block px-4"><router-link class="block text-dark-side-blue p-4 text-xl" to="/about">About</router-link></li>
+                <li class="block px-4"><router-link class="block text-dark-side-blue p-4 text-xl" to="/projects">Projects</router-link></li>
+                <li class="block px-4"><router-link class="block text-dark-side-blue p-4 text-xl" to="/user/1">Users</router-link></li>
+                <li class="block px-4"><router-link class="block text-dark-side-blue p-4 text-xl" to="/createProject">new project</router-link></li>
+                <li class="block px-4"><router-link class="block text-dark-side-blue p-4 text-xl" to="/login">Login</router-link></li>
+                <li class="block px-4"><router-link class="block text-dark-side-blue p-4 text-xl" to="/createUser">Sign-In</router-link></li>
             </ul>
         </div>
     </div>
@@ -29,8 +30,3 @@ export default {
     
 }
 </script>
-<style>
-body {
-  overflow-x: hidden;
-}
-</style>

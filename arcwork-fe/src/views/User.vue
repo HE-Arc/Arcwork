@@ -1,22 +1,20 @@
 <template>
     <div>
         <NavBar />
-        <div class="mx-auto w-8/12">
-            <div class="flex justify-between px-14 py-10">
-                <div class="">
-                    <div class="text-4xl font-bold py-4 pr-2 inline-block">{{ name }}</div>
-                    <div class="text-xl inline">#{{ $route.params.id }}</div>
-                    <div class="">
+        <div class="mx-auto md:w-8/12">
+            <div class="md:flex justify-between md:px-14 py-10">
+                <div class="flex justify-center">
+                    <div class="text-4xl font-bold py-4 pr-2 inline-block">{{ name }}<div class="text-xl inline">#{{ $route.params.id }}</div></div>
+                    <div class="break-words">
                         {{ bio }}
                     </div>
                 </div>
-                <div class="">
-                    <div class="h-32 w-32">
-                        <!--<div class="h-32 w-32 z-50 rounded-full flex items-center justify-center ring-8 ring-  absolute"></div>-->
-                        <img class="h-28 w-28 m-2 z-40 object-scale-down absolute" src="../assets/ArcworkLogo.png">
+                <div class="flex justify-center">
+                    <div class=" h-32 w-32">
+                        <img class="h-28 w-28 m-2 object-scale-down" src="../assets/ArcworkLogo.png">
                     </div>
                 </div>
-                <div class="p-10">
+                <div class="flex justify-center md:p-10 p-0">
                     <Like v-on:click="liked" :n="like" />
                     <p>{{ creationDate }}</p>
                 </div>
