@@ -1,6 +1,6 @@
 <template>
     <NavBar />
-    <div class="w-4/12 flex flex-col mx-auto px-14 py-10">
+    <div class="md:w-6/12 lg:4/12 flex flex-col mx-auto px-14 py-10">
         <div class="flex-auto text-4xl font-bold mx-auto block">Login</div>
         <div id="errorMsg">
             <error-msg :msg="error_msg"> </error-msg>

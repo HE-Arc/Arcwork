@@ -1,6 +1,6 @@
 <template>
     <NavBar />
-    <div class="w-1/2 mx-auto">
+    <div class="md:w-1/2 mx-auto">
         <div class="text-5xl font-bold my-10">Welcome to Arcwork</div>
         <div class="flex flex-row space-x-7">
             <Search class="flex-1" placeholder="Recherche" label="Recherche"/>
