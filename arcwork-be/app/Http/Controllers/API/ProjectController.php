@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Project;
 use App\Models\User;
 use App\Models\Tag;
@@ -55,47 +56,28 @@ class ProjectController extends Controller
             'profilePicPath' => $validated['profilePicPath']
         ])->id;
 
-        $dd = [];
         $data = json_decode($request->getContent());
         if (isset($data->{'texts'})) {
             foreach ($data->{'texts'} as $text) {
                 if (ProjectController::validText($text)) {
-                    $textId = Text::create(["text" => $text])->id;
-                    ProjectText::create([
-                        "projectId" => $projectId,
-                        "textId" => $textId
-                    ]);
+                    $text = Text::create(["text" => $text]);
+                    $text->projects()->attach($projectId);
+
                 }
             }
         }
         if (isset($data->{'hashtags'})) {
             foreach ($data->{'hashtags'} as $hashtag) {
                 if (ProjectController::validHashtag($hashtag)) {
-                    try {
-                        $hashtagId = Tag::create(["name" => $hashtag])->id;
-                        ProjectHashTag::create([
-                            "projectId" => $projectId,
-                            "hashtagId" => $hashtagId
-                        ]);
-                    } catch (\Throwable $th) {
-                        /**
-                         * il faudrait verifier que l'erreur soit bien
-                         * que le hashtag existe deja sinon nimporte qui pourrait
-                         * link de mauvais hashtag
-                         */
-                        $hashtagId = ProjectController::getHashtagId($hashtag);
-                        if ($hashtagId != -1) {
-                            ProjectHashTag::create([
-                                "projectId" => $projectId,
-                                "hashtagId" => $hashtagId
-                            ]);
-                        }
+                    //$hashtag = DB::table('tags')->where('name', $hashtag)->get(); // other version, delete the DB header along with this line
+                    Tag::where('name', $hashtag)->get();
+                    if (empty($hashtag)) {
+                        $hashtag = Tag::create(["name" => $hashtag]);
                     }
+                    $hashtag->projects()->attach($projectId);
                 }
             }
         }
-
-
 
         return response()->json([
             "status" => 'success',
@@ -114,9 +96,8 @@ class ProjectController extends Controller
         $project = Project::findOrFail($id);
         return response()->json([
             "project" => $project,
-            "hashtags" => ProjectController::getProjectHashtag($id),
-            "texts" => ProjectController::getProjectText($id)
-
+            "hashtags" => $project->hashtags()->get()->pluck('name'),
+            "texts" => $project->texts()->get()->pluck('text'),
         ]);
     }
 
@@ -150,50 +131,10 @@ class ProjectController extends Controller
     {
     }
 
-    //mauvais, à remplacer par un truc plus laravel
-    static private function getHashtagId($hashtag)
-    {
-        $hashtags = Tag::all();
-        foreach ($hashtags as $tag) {
-            if ($tag["name"] == $hashtag) {
-                return $tag['id'];
-            }
-        }
-        return -1;
-    }
-
-    static private function getProjectHashtag($projectId)
-    {
-        //j'arrive pas à utiliser where !!
-        $hashtags = [];
-        foreach (ProjectHashTag::all() as $l) {
-            if ($l['projectId'] == $projectId) {
-                array_push($hashtags, Tag::findOrFail($l['hashtagId'])['name']);
-            }
-        }
-
-        return $hashtags;
-    }
-
-    static private function getProjectText($projectId)
-    {
-        $texts = [];
-        foreach (ProjectText::all() as $l) {
-            if ($l['projectId'] == $projectId) {
-                array_push($texts, Text::findOrFail($l['textId'])['text']);
-            }
-        }
-
-        return $texts;
-    }
-
     static private function tokenExist($token)
     {
         $user = User::where('identificationToken', $token)->get();
-        if (isset($user[0]['pseudo'])) {
-            return true;
-        }
-        return false;
+        return isset($user[0]['pseudo']);
     }
 
 
