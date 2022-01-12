@@ -3,6 +3,8 @@
 Application web de référencement de projet.
 
 # Installation
+Comment lancer le projet en local:
+
 
 1. Clone project
 ```
